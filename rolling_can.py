@@ -6,28 +6,25 @@ can = cv2.VideoCapture("/Users/local/PycharmProjects/RollingCanDetection/test/Ro
 
 while can.isOpened():
     _, frame = can.read()
-    blur = cv2.medianBlur(frame, 5)
+    blur = cv2.medianBlur(frame, 21)
     gray_scale = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
 
-    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 20, param1=80, param2=30, minRadius=0, maxRadius=0)
-    circles = np.uint16(np.around(circles))
+    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=80, maxRadius=300)
 
     counter = 0
-
     if circles is not None:
+        circles = np.uint16(np.around(circles))
+        counter += 1
+
         for i in circles[0, :]:
             # draw outer circle
-            cv2.circle(frame, (i[0], i[1]), i[2], (0, 0, 255), 5)
+            cv2.circle(frame, (i[0], i[1]), i[2], (255, 0, 0), 10)
             # draw center of the circle
-            cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 0), 5)
+            cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 0), 10)
 
-            counter += 1
             break
 
-    else: print("No circles detected")
-
-
-    cv2.imshow("test", frame)
+    cv2.imshow("Rolling Can Detection", frame)
 
     # cv2.imshow("gray_scale", gray_scale)
 
@@ -44,11 +41,10 @@ while can.isOpened():
     # cv2.imshow(writer)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        # total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
-        # print(total_frames)
-        # print(counter)
-        # print(counter, "/", total_frames)
+        total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
+        print(total_frames)
+        print(counter)
+        print(counter, "/", total_frames)
         break
         cv2.destroyAllWindows()
-
 
