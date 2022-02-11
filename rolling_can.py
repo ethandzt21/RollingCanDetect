@@ -2,16 +2,16 @@ import cv2
 import numpy as np
 
 
-can = cv2.VideoCapture("/Users/local/PycharmProjects/RollingCanDetection/test/RollingCanTest#2.mp4")
+can = cv2.VideoCapture("/Users/local/PycharmProjects/RollingCanDetection/test/RollingCanTest#1.mp4")
 
+counter = 0
 while can.isOpened():
     _, frame = can.read()
     blur = cv2.medianBlur(frame, 21)
     gray_scale = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
 
-    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=80, maxRadius=300)
+    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=300, maxRadius=1000)
 
-    counter = 0
     if circles is not None:
         circles = np.uint16(np.around(circles))
         counter += 1
@@ -40,11 +40,11 @@ while can.isOpened():
     # writer.release()
     # cv2.imshow(writer)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) == ord('q'):
         total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
         print(total_frames)
         print(counter)
         print(counter, "/", total_frames)
+
         break
         cv2.destroyAllWindows()
-
