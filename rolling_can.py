@@ -32,7 +32,7 @@ while can.isOpened():
     #     size = (width, height)
     #     img_array.append(can)
     #
-    # writer = cv2.VideoWriter('tes.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+    # writer = cv2.VideoWriter('test.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
     #
     # for i in range(len(img_array)):
     #     writer.write(img_array[i])
