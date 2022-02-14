@@ -17,8 +17,8 @@ while can.isOpened():
 
     cv2.putText(frame, "FRAMES OF CIRCLE DETECTED: ", (50, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
     cv2.putText(frame, str(counter), (540, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
-    cv2.putText(frame, "/", (585, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
-    cv2.putText(frame, str(total_frames), (615, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
+    cv2.putText(frame, "/", (590, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
+    cv2.putText(frame, str(total_frames), (620, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
 
     if circles is not None:
         circles = np.uint16(np.around(circles))
