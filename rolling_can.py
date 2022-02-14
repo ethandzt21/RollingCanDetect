@@ -4,6 +4,7 @@ import numpy as np
 
 can = cv2.VideoCapture("/Users/local/PycharmProjects/RollingCanDetection/test/RollingCan2.mp4")
 font = cv2.FONT_HERSHEY_SIMPLEX
+total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
 
 counter = 0
 while can.isOpened():
@@ -16,6 +17,8 @@ while can.isOpened():
 
     cv2.putText(frame, "FRAMES OF CIRCLE DETECTED: ", (50, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
     cv2.putText(frame, str(counter), (540, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
+    cv2.putText(frame, "/", (585, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
+    cv2.putText(frame, str(total_frames), (615, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
 
     if circles is not None:
         circles = np.uint16(np.around(circles))
@@ -47,7 +50,7 @@ while can.isOpened():
 
     if cv2.waitKey(1) == ord('q'):
         total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
-        print(counter, "/", total_frames)
+        print("FRAMES OF CIRCLE DETECTED:", counter, "/", total_frames)
 
         break
         cv2.destroyAllWindows()
