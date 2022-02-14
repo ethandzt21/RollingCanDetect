@@ -2,15 +2,20 @@ import cv2
 import numpy as np
 
 
-can = cv2.VideoCapture("/Users/local/PycharmProjects/RollingCanDetection/test/RollingCanTest#1.mp4")
+can = cv2.VideoCapture("/Users/local/PycharmProjects/RollingCanDetection/test/RollingCan2.mp4")
+font = cv2.FONT_HERSHEY_SIMPLEX
 
 counter = 0
 while can.isOpened():
     _, frame = can.read()
+    frame = frame[300:1300, 0:10000]
     blur = cv2.medianBlur(frame, 21)
     gray_scale = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
 
-    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=300, maxRadius=1000)
+    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=230, maxRadius=250)
+
+    cv2.putText(frame, "FRAMES OF CIRCLE DETECTED: ", (50, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
+    cv2.putText(frame, str(counter), (540, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
 
     if circles is not None:
         circles = np.uint16(np.around(circles))
@@ -32,7 +37,7 @@ while can.isOpened():
     #     size = (width, height)
     #     img_array.append(can)
     #
-    # writer = cv2.VideoWriter('test.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+    # writer = cv2.VideoWriter('tes.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
     #
     # for i in range(len(img_array)):
     #     writer.write(img_array[i])
@@ -42,8 +47,6 @@ while can.isOpened():
 
     if cv2.waitKey(1) == ord('q'):
         total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
-        print(total_frames)
-        print(counter)
         print(counter, "/", total_frames)
 
         break
