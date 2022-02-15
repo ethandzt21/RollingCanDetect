@@ -7,3 +7,6 @@ https://docs.opencv.org/3.4/d4/d70/tutorial_hough_circle.html
 https://stackoverflow.com/questions/25389985/track-circles-in-video-opencv
 https://stackoverflow.com/questions/35038919/ball-circle-shape-tracking-in-video-or-live-feed-with-opencv-python?noredirect=1&lq=1
 https://theailearner.com/2018/10/15/creating-video-from-images-using-opencv-python/
+https://learnopencv.com/cropping-an-image-using-opencv/
+https://www.geeksforgeeks.org/perspective-transformation-python-opencv/
+https://www.geeksforgeeks.org/python-opencv-write-text-on-video/
