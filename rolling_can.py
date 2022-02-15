@@ -6,11 +6,15 @@ can = cv2.VideoCapture("test/RollingCan2.mp4")
 font = cv2.FONT_HERSHEY_SIMPLEX
 total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
 
+frame_pos = 0
+# determine current frame
+
 counter = 0
 while can.isOpened():
     _, frame = can.read()
     frame = cv2.resize(frame, (1280, 720))
-    frame = frame[50:550, :]
+    frame = frame[50:500, :]
+    frame_pos += 1
 
     blur = cv2.medianBlur(frame, 11)
     gray_scale = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
@@ -22,17 +26,20 @@ while can.isOpened():
     cv2.putText(frame, "/", (575, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
     cv2.putText(frame, str(total_frames), (600, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
 
-    if circles is not None:
-        circles = np.uint16(np.around(circles))
-        counter += 1
+    if (frame_pos > 80) & (frame_pos < 355):
+        # delay detection window
+        if circles is not None:
+            # avoids crash when no circles are detected
+            circles = np.uint16(np.around(circles))
+            counter += 1
 
-        for i in circles[0, :]:
-            # draw outer circle
-            cv2.circle(frame, (i[0], i[1]), i[2], (255, 0, 0), 2)
-            # draw center of the circle
-            cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 0), 3)
+            for i in circles[0, :]:
+                # draw outer circle
+                cv2.circle(frame, (i[0], i[1]), i[2], (255, 0, 0), 2)
+                # draw center of the circle
+                cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 0), 3)
 
-            break
+                break
 
     cv2.imshow("Rolling Can Detection", frame)
 
@@ -52,7 +59,7 @@ while can.isOpened():
 
     if cv2.waitKey(1) == ord('q'):
         total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
-        print("FRAMES OF CIRCLE DETECTED:", counter, "/", total_frames)
+        print("TOTAL FRAMES OF CIRCLE DETECTED:", counter, "/", total_frames)
 
         break
         cv2.destroyAllWindows()
