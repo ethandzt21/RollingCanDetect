@@ -10,6 +10,7 @@ frame_pos = 0
 # determine current frame
 
 counter = 0
+# counts the frames of circle detected
 while can.isOpened():
     _, frame = can.read()
     frame = cv2.resize(frame, (1280, 720))
@@ -27,7 +28,7 @@ while can.isOpened():
     cv2.putText(frame, str(total_frames), (600, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
 
     if (frame_pos > 80) & (frame_pos < 355):
-        # delay detection window
+        # modify detection window
         if circles is not None:
             # avoids crash when no circles are detected
             circles = np.uint16(np.around(circles))
