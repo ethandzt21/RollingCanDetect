@@ -4,7 +4,7 @@ import numpy as np
 
 can = cv2.VideoCapture("test/RollingCan2.mp4")
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-out = cv2.VideoWriter('output_video.mp4', fourcc, 20.0, (1280, 720))
+out = cv2.VideoWriter('output_video.mp4', fourcc, 20, (1280, 720))
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -16,20 +16,20 @@ counter = 0
 while can.isOpened():
     ret, frame = can.read()
     frame = cv2.resize(frame, (1280, 720))
-    frame = frame[50:500, :]
     frame_pos += 1
 
-    blur = cv2.medianBlur(frame, 11)
+    blur = cv2.medianBlur(frame, 15)
     gray_scale = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
 
-    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=75, maxRadius=85)
+    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=75, maxRadius=90)
+    # min = 75, max = 85
 
     cv2.putText(frame, "FRAMES OF CIRCLE DETECTED: ", (25, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
     cv2.putText(frame, str(counter), (515, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
     cv2.putText(frame, "/", (575, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
     cv2.putText(frame, str(total_frames), (600, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
 
-    if (frame_pos > 80) & (frame_pos < 355):
+    if (frame_pos > 80) & (frame_pos < 350):
         # delay detection window
         if circles is not None:
             # avoids crash when no circles are detected
