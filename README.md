@@ -10,3 +10,4 @@ Compose Video From Images - https://theailearner.com/2018/10/15/creating-video-f
 Image Cropping - https://learnopencv.com/cropping-an-image-using-opencv/
 Perspective Transformation - https://www.geeksforgeeks.org/perspective-transformation-python-opencv/
 Write Text - https://www.geeksforgeeks.org/python-opencv-write-text-on-video/
+Read & Write Videos with OpenCV: https://learnopencv.com/reading-and-writing-videos-using-opencv/#read-from-image-sequence
