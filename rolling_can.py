@@ -4,13 +4,13 @@ import numpy as np
 
 can = cv2.VideoCapture("test/RollingCan2.mp4")
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-out = cv2.VideoWriter('output_video.mp4', fourcc, 20, (1280, 720))
+out = cv2.VideoWriter('RollingCanOutput.mp4', fourcc, 20, (1280, 720))
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
 
 frame_pos = 0
-# determine current frame
+# determine current frame position
 
 counter = 0
 while can.isOpened():
@@ -18,11 +18,10 @@ while can.isOpened():
     frame = cv2.resize(frame, (1280, 720))
     frame_pos += 1
 
-    blur = cv2.medianBlur(frame, 15)
+    blur = cv2.medianBlur(frame, 11)
     gray_scale = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
 
-    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=75, maxRadius=90)
-    # min = 75, max = 85
+    circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=75, maxRadius=85)
 
     cv2.putText(frame, "FRAMES OF CIRCLE DETECTED: ", (25, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
     cv2.putText(frame, str(counter), (515, 50), font, 1, (255, 0, 255), 2, cv2.LINE_4)
