@@ -1,11 +1,10 @@
 import cv2
 import numpy as np
-import glob
 
 
 can = cv2.VideoCapture("test/RollingCan2.mp4")
-fourcc = cv2.VideoWriter_fourcc(*"DIVX")
-out = cv2.VideoWriter('output_video.mp4v', fourcc, 20.0, (1280, 720))
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+out = cv2.VideoWriter('output_video.mp4', fourcc, 20.0, (1280, 720))
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -15,7 +14,7 @@ frame_pos = 0
 
 counter = 0
 while can.isOpened():
-    _, frame = can.read()
+    ret, frame = can.read()
     frame = cv2.resize(frame, (1280, 720))
     frame = frame[50:500, :]
     frame_pos += 1
@@ -45,27 +44,16 @@ while can.isOpened():
 
                 break
 
+    if ret is True:
+        out.write(frame)
+
     cv2.imshow("Rolling Can Detection", frame)
-
-    out.write(frame)
-    # cv2.imshow("gray_scale", gray_scale)
-
-    #     height, width, layers = can.shape
-    #     size = (width, height)
-    #     img_array.append(can)
-    #
-    # writer = cv2.VideoWriter('tes.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
-    #
-    # for i in range(len(img_array)):
-    #     writer.write(img_array[i])
-    #
-    # writer.release()
-    # cv2.imshow(writer)
 
     if cv2.waitKey(1) == ord('q'):
         total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
         print("TOTAL FRAMES OF CIRCLE DETECTED:", counter, "/", total_frames)
-        out.release()
-
         break
-        cv2.destroyAllWindows()
+
+can.release()
+out.release()
+cv2.destroyAllWindows()
