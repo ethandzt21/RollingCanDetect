@@ -4,7 +4,7 @@ import numpy as np
 
 can = cv2.VideoCapture("test/RollingCan2.mp4")
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-out = cv2.VideoWriter('RollingCanOutput.mp4', fourcc, 20, (1280, 720))
+output = cv2.VideoWriter('RollingCanOutput.mp4', fourcc, 20, (1280, 720))
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 total_frames = int(can.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -30,6 +30,7 @@ while can.isOpened():
 
     if (frame_pos > 80) & (frame_pos < 350):
         # delay detection window
+        
         if circles is not None:
             # avoids crash when no circles are detected
             circles = np.uint16(np.around(circles))
@@ -44,7 +45,7 @@ while can.isOpened():
                 break
 
     if ret is True:
-        out.write(frame)
+        output.write(frame)
 
     cv2.imshow("Rolling Can Detection", frame)
 
@@ -54,5 +55,5 @@ while can.isOpened():
         break
 
 can.release()
-out.release()
+output.release()
 cv2.destroyAllWindows()
