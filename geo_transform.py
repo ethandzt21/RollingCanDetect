@@ -1,21 +1,34 @@
 import cv2
 import numpy as np
 
-img = cv2.imread("source/test_l3.jpg")
+src_img = cv2.imread("source/test_l3.jpg")
 
-# Specify input and output coordinates that is used
-# to calculate the transformation matrix
-input_pts = np.float32([[850, 200], [825, 815], [1682, 796], [1734, 150]])
-output_pts = np.float32([[100,100], [100,3900], [2200,3900], [2200,100]])
+input_pts = np.float32([[800, 200], [800, 1500], [1500, 1500], [1500, 200]])
+dst_pts = np.float32([[500, 100], [500, 2600], [1500, 3000], [1300, 100]])
 
-# Compute the perspective transform M
-M = cv2.getPerspectiveTransform(input_pts,output_pts)
+matrix = cv2.getPerspectiveTransform(input_pts, dst_pts)
 
-# Apply the perspective transformation to the image
-out = cv2.warpPerspective(img, M, (img.shape[1], img.shape[0]), flags=cv2.INTER_LINEAR)
+transform = cv2.warpPerspective(src_img, matrix, (src_img.shape[1], src_img.shape[0]), flags=cv2.INTER_LINEAR)
 
-# Display the transformed image
-cv2.imshow('1', out)
+blur_img = cv2.medianBlur(transform, 7)
+gray_scale = cv2.cvtColor(blur_img, cv2.COLOR_BGR2GRAY)
+
+circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=0, maxRadius=0)
+
+if circles is not None:
+    circles = np.uint16(np.around(circles))
+
+    for i in circles[0, :]:
+        # draw actual circle
+        cv2.circle(transform, (i[0], i[1]), i[2], (0, 0, 255), 5)
+        # center of the circle
+        cv2.circle(transform, (i[0], i[1]), 2, (0, 0, 0), 5)
+
+elif circles is None:
+    print("failed")
+
+
+cv2.imshow("Circle Transform", transform)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
