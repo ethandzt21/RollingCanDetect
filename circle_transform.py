@@ -4,11 +4,11 @@ import numpy as np
 
 test_img = cv2.imread("source/test_l3.jpg")
 
-# All points are in format [cols, rows]
-pt_A = [850, 200]
-pt_B = [825, 815]
-pt_C = [1682, 796]
-pt_D = [1734, 150]
+
+pt_A = [785, 332]
+pt_B = [889, 762]
+pt_C = [1792, 505]
+pt_D = [1585, 131]
 
 # Here, I have used L2 norm. You can use L1 also.
 width_AD = np.sqrt(((pt_A[0] - pt_D[0]) ** 2) + ((pt_A[1] - pt_D[1]) ** 2))
@@ -22,21 +22,9 @@ maxHeight = max(int(height_AB), int(height_CD))
 
 input_pts = np.float32([pt_A, pt_B, pt_C, pt_D])
 output_pts = np.float32([[0, 0], [0, maxHeight - 1], [maxWidth - 1, maxHeight - 1], [maxWidth - 1, 0]])
+
 M = cv2.getPerspectiveTransform(input_pts, output_pts)
-out = cv2.warpPerspective(test_img, M,(maxWidth, maxHeight),flags=cv2.INTER_LINEAR)
-#
-# cv2.imshow("Transform", out)
-
-# transform_mat = cv2.getPerspectiveTransform(src, dst)
-# dst = cv2.warpPerspective(src, M, dsize[, dst[, flags[, borderMode[, borderValue]]]] )
-
-# src: input image
-# M: Transformation matrix
-# dsize: size of the output image
-# flags: interpolation method to be used
-
-# src: coordinates in the source image
-# dst: coordinates in the output image
+out = cv2.warpPerspective(test_img, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
 
 
 blur_img = cv2.medianBlur(out, 7)
@@ -55,7 +43,6 @@ if circles is not None:
         cv2.circle(out, (i[0], i[1]), 2, (0, 0, 0), 5)
 
 
-print("Failure to detect circles.")
 cv2.imshow("C1", out)
 
 
