@@ -8,6 +8,7 @@ dst_pts = np.float32([[100, 100], [100, 1180], [1321, 1180], [1321, 100]])
 
 matrix = cv2.getPerspectiveTransform(input_pts, dst_pts)
 
+
 transform = cv2.warpPerspective(src_img, matrix, (src_img.shape[1], src_img.shape[0]), flags=cv2.INTER_LINEAR)
 
 cv2.imwrite("source/test1.jpg", transform)
@@ -17,11 +18,12 @@ gray_scale = cv2.cvtColor(blur_img, cv2.COLOR_BGR2GRAY)
 
 circles = cv2.HoughCircles(gray_scale, cv2.HOUGH_GRADIENT, 1, 100, param1=80, param2=30, minRadius=620, maxRadius=640)
 
-point_transformed = cv2.perspectiveTransform(src_img, matrix)
+point_transformed = cv2.getPerspectiveTransform(input_pts, dst_pts)
 
 # Reverse transform
-inv_trans = np.linalg.pinv(matrix)
-round_tripped = cv2.perspectiveTransform(point_transformed, inv_trans)
+# inv_trans = np.linalg.pinv(matrix)
+pts = np.float32(np.array([[[2121, 1414]]]))
+round_tripped = cv2.perspectiveTransform(pts, point_transformed)
 
 # if circles is not None:
 #     circles = np.uint16(np.around(circles))
